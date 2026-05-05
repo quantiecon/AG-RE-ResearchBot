@@ -14,18 +14,19 @@ def init_db() -> None:
     with sqlite3.connect(DB_PATH) as conn:
         conn.executescript("""
             CREATE TABLE IF NOT EXISTS daily_research (
-                id                      INTEGER PRIMARY KEY AUTOINCREMENT,
-                date                    TEXT    NOT NULL UNIQUE,
-                raw_research            TEXT,
-                sentiment_score         INTEGER,
-                sentiment_label         TEXT,
-                bullish_factors         TEXT,
-                bearish_factors         TEXT,
-                market_summary          TEXT,
-                directional_prediction  TEXT,
-                key_metrics             TEXT,
-                telegram_message        TEXT,
-                created_at              TEXT DEFAULT CURRENT_TIMESTAMP
+                id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+                date                     TEXT    NOT NULL UNIQUE,
+                raw_research             TEXT,
+                sentiment_score          INTEGER,
+                sentiment_label          TEXT,
+                bullish_factors          TEXT,
+                bearish_factors          TEXT,
+                market_summary           TEXT,
+                directional_prediction   TEXT,
+                key_metrics              TEXT,
+                most_significant_change  TEXT,
+                telegram_message         TEXT,
+                created_at               TEXT DEFAULT CURRENT_TIMESTAMP
             );
 
             CREATE TABLE IF NOT EXISTS weekly_reports (
@@ -44,6 +45,10 @@ def init_db() -> None:
                 created_at       TEXT DEFAULT CURRENT_TIMESTAMP
             );
         """)
+        try:
+            conn.execute("ALTER TABLE daily_research ADD COLUMN most_significant_change TEXT")
+        except sqlite3.OperationalError:
+            pass
         conn.commit()
 
 
@@ -58,6 +63,7 @@ def save_daily(
     directional_prediction: str,
     key_metrics: dict,
     telegram_message: str,
+    most_significant_change: str = "",
 ) -> None:
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute(
@@ -65,14 +71,16 @@ def save_daily(
             INSERT OR REPLACE INTO daily_research
             (date, raw_research, sentiment_score, sentiment_label,
              bullish_factors, bearish_factors, market_summary,
-             directional_prediction, key_metrics, telegram_message)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             directional_prediction, key_metrics, most_significant_change,
+             telegram_message)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 date_str, raw_research, sentiment_score, sentiment_label,
                 json.dumps(bullish_factors), json.dumps(bearish_factors),
                 market_summary, directional_prediction,
-                json.dumps(key_metrics), telegram_message,
+                json.dumps(key_metrics), most_significant_change,
+                telegram_message,
             ),
         )
         conn.commit()

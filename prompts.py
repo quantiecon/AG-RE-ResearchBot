@@ -23,8 +23,13 @@ PRIMARY DATA SOURCES — concentrate on these where possible (not exclusive):
 - California Association of Realtors (CAR) — pending sales index, monthly market reports
 - Redfin Data Center (Irvine and Orange County trackers)
 - Realtor.com market trends and inventory data
-You may supplement with Zillow, MLS feeds, Bankrate, FRED, NAR, and reputable financial \
-news outlets when the four primary sources do not provide a needed datapoint."""
+- CRMLS / MLS Hot Sheets (active, pending, sold, price-change activity for OC)
+- Mortgage News Daily (rate movement, lender lock desk commentary)
+- Freddie Mac Primary Mortgage Market Survey (PMMS) — weekly rate benchmark
+You may supplement with Zillow, Bankrate, FRED, NAR, the Federal Reserve, BLS, and \
+reputable financial news outlets when the primary sources don't have a needed datapoint. \
+If you find a higher-quality or more current source than those listed, use it AND note \
+which alternative source was used so it can be evaluated for inclusion later."""
 
 SYSTEM_ANALYST = """You are a CPA-trained real estate market strategist. You combine deep \
 financial analysis with real estate expertise. You understand how Fed policy transmits \
@@ -74,6 +79,12 @@ vs 12 months ago (assume 20% down)
 - Any new or pending federal legislation affecting real estate (tax policy, GSE news, \
 conforming loan limits, FHA/VA changes)
 - California-specific: Prop 13 developments, SB 9/zoning policy, rent control updates
+- LOCAL TAX LAW CHANGES (only report if something material has actually changed at the \
+California state, Orange County, or city of Irvine / Newport Beach / Tustin / etc. level): \
+property tax assessment changes, parcel taxes, Mello-Roos changes, transfer tax / \
+documentary transfer tax changes, special assessments, vacancy tax proposals, mansion-tax \
+proposals, business property tax. If nothing has changed in the past week at these levels, \
+say "本周无重大本地税法变动" and move on — do not invent or restate old changes.
 - Significant employer news in Irvine/OC (expansions, layoffs, relocations)
 - Any geopolitical or financial market events with direct housing market implications
 
@@ -85,6 +96,14 @@ current rates with 25% down? Approximate numbers.
 
 **6. RECENT ANALYST COMMENTARY**
 - Any notable market reports, analyst takes, or significant transactions in the past 7 days
+
+**7. SINGLE MOST IMPACTFUL PAST-WEEK CHANGE**
+Identify the ONE change in the past 7 days that has had (or is most likely to have) the \
+largest directional impact on the Irvine / Orange County housing market. This can be a \
+rate move, a policy change, a major data print, a notable transaction, or a local event. \
+Be specific about the magnitude and the transmission channel (e.g., "30yr jumbo +18 bps \
+to 7.42% — adds ~$170/mo on a $1.5M Irvine home at 80% LTV, materially tightening jumbo \
+buyer pool"). One change only — pick the most consequential.
 
 PRIOR WEEK CONTEXT — use to identify trends and directional changes:
 {context}
@@ -122,7 +141,8 @@ Required JSON format:
     "irvine_median_price": "<价格>",
     "oc_months_supply": "<月数>",
     "irvine_dom": "<天数>"
-  }}
+  }},
+  "most_significant_change": "<2-3 句中文,描述过去 7 天对尔湾/橙县房市影响最大的单一变动 — 注明具体幅度与传导路径,例如:\\"30 年大额贷款利率本周上涨 18 bp 至 7.42%,$1.5M 尔湾房产 80% LTV 月供增加约 $170,实质性收窄大额贷款买家池\\">"
 }}
 
 Sentiment scale:
@@ -159,6 +179,10 @@ PRIMARY DATA SOURCES — concentrate on these (not exclusive):
 - California Association of Realtors (CAR)
 - Redfin Data Center
 - Realtor.com market trends
+- CRMLS / MLS Hot Sheets
+- Mortgage News Daily
+- Freddie Mac PMMS
+You may supplement with or substitute a better source where warranted; note the source.
 """
 
 WEEKLY_GRADING_PROMPT = """\

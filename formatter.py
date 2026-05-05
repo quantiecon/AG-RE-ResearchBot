@@ -14,6 +14,7 @@ def format_daily_message(
     sentiment_label: str,
     directional_prediction: str,
     key_metrics: dict,
+    most_significant_change: str = "",
 ) -> str:
     emoji = SENTIMENT_EMOJI.get(sentiment_score, "🟡")
     bar = SENTIMENT_BAR.get(sentiment_score, "▓▓▓░░")
@@ -51,6 +52,8 @@ def format_daily_message(
         f"{emoji} 综合判断:{sentiment_label}\n"
         f"[{bar}] {sentiment_score}/5\n\n"
         f"{directional_prediction}\n\n"
+        f"🔥 本周最重大变动\n"
+        f"{most_significant_change or '(本周暂无突出单一变动)'}\n\n"
         f"—\n"
         f"Berkshire Hathaway HomeServices | 加州尔湾\n"
         f"橙县房产市场情报"

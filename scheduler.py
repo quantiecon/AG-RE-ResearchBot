@@ -51,22 +51,24 @@ async def daily_job() -> None:
             bullish_factors=result.get("bullish_factors", []),
             bearish_factors=result.get("bearish_factors", []),
             sentiment_score=result.get("sentiment_score", 3),
-            sentiment_label=result.get("sentiment_label", "Neutral"),
+            sentiment_label=result.get("sentiment_label", "中性"),
             directional_prediction=result.get("directional_prediction", ""),
             key_metrics=result.get("key_metric_snapshot", {}),
+            most_significant_change=result.get("most_significant_change", ""),
         )
 
         memory.save_daily(
             date_str=today_iso,
             raw_research=result.get("raw_research", ""),
             sentiment_score=result.get("sentiment_score", 3),
-            sentiment_label=result.get("sentiment_label", "Neutral"),
+            sentiment_label=result.get("sentiment_label", "中性"),
             bullish_factors=result.get("bullish_factors", []),
             bearish_factors=result.get("bearish_factors", []),
             market_summary=result.get("market_summary", ""),
             directional_prediction=result.get("directional_prediction", ""),
             key_metrics=result.get("key_metric_snapshot", {}),
             telegram_message=message,
+            most_significant_change=result.get("most_significant_change", ""),
         )
 
         await send_message(message)
