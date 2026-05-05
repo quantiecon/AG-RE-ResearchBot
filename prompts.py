@@ -10,14 +10,33 @@ professional at Berkshire Hathaway HomeServices who fully understands cap rates,
 1031 exchanges, cost segregation, depreciation schedules, conforming vs jumbo loan structures, \
 basis points, and macro policy transmission to mortgage markets. Provide precise, \
 current data with specific numbers, percentages, and dates. Cite sources where possible. \
-Be thorough and professional — no fluff."""
+Be thorough and professional — no fluff.
+
+LANGUAGE: Respond entirely in Simplified Chinese (简体中文). Numbers, percentages, currency \
+symbols, dates, and proper nouns (Irvine, Orange County, Berkshire Hathaway, Federal Reserve, \
+FOMC, Redfin, Realtor.com, Fannie Mae, Freddie Mac, etc.) may remain in their original form \
+where conventional. When returning JSON, keep all keys in English; only string VALUES are \
+translated to Chinese.
+
+PRIMARY DATA SOURCES — concentrate on these where possible (not exclusive):
+- OC Realtors / Pacific West Association of Realtors market data
+- California Association of Realtors (CAR) — pending sales index, monthly market reports
+- Redfin Data Center (Irvine and Orange County trackers)
+- Realtor.com market trends and inventory data
+You may supplement with Zillow, MLS feeds, Bankrate, FRED, NAR, and reputable financial \
+news outlets when the four primary sources do not provide a needed datapoint."""
 
 SYSTEM_ANALYST = """You are a CPA-trained real estate market strategist. You combine deep \
 financial analysis with real estate expertise. You understand how Fed policy transmits \
 to the mortgage market, how rate movements affect buyer affordability on jumbo loans \
 (the dominant product in Irvine), how depreciation and cost segregation affect investor \
 returns, and how macro conditions translate to micro movements in high-value California \
-markets. Provide precise, data-driven analysis with a clear directional view."""
+markets. Provide precise, data-driven analysis with a clear directional view.
+
+LANGUAGE: Respond entirely in Simplified Chinese (简体中文). Numbers, percentages, currency \
+symbols, dates, and proper nouns may remain in their original form. When returning JSON, \
+keep all keys and enum values (sentiment labels, letter grades) in their specified form; \
+only natural-language string values are translated to Chinese."""
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DAILY RESEARCH
@@ -73,7 +92,9 @@ PRIOR WEEK CONTEXT — use to identify trends and directional changes:
 
 SENTIMENT_ANALYSIS_PROMPT = """\
 Based on the following Irvine/Orange County real estate market research for {date}, \
-produce a structured sentiment analysis. Return ONLY valid JSON — no text before or after.
+produce a structured sentiment analysis. Return ONLY valid JSON — no text before or after. \
+All natural-language string values MUST be in Simplified Chinese (简体中文); JSON keys \
+and the sentiment_label enum stay as specified.
 
 Research:
 {research}
@@ -81,37 +102,38 @@ Research:
 Required JSON format:
 {{
   "sentiment_score": <integer 1-5>,
-  "sentiment_label": "<Strong Hold|Hold|Neutral|Buy|Strong Buy>",
+  "sentiment_label": "<强烈持有|持有|中性|买入|强烈买入>",
   "bullish_factors": [
-    "<bullet with exact metric, e.g. \\"OC inventory fell 18% YoY to 2.1 months supply — firmly seller territory\\">",
-    "<bullet with exact metric>",
-    "<bullet with exact metric>"
+    "<具体指标的简短中文描述,例如:\\"橙县库存同比下降 18% 至 2.1 个月供应 — 明显卖方市场\\">",
+    "<具体指标的简短中文描述>",
+    "<具体指标的简短中文描述>"
   ],
   "bearish_factors": [
-    "<bullet with exact metric, e.g. \\"Jumbo 30yr at 7.25% puts P&I on $1.5M (80% LTV) at $10,280/mo — 23% above 2-yr avg\\">",
-    "<bullet with exact metric>",
-    "<bullet with exact metric>"
+    "<具体指标的简短中文描述,例如:\\"30 年大额贷款利率 7.25%,$1.5M 房产 (80% LTV) 月供本息约 $10,280,较两年均值高 23%\\">",
+    "<具体指标的简短中文描述>",
+    "<具体指标的简短中文描述>"
   ],
-  "market_summary": "<3-4 sentences, CPA-level market overview with specific numbers and trend direction>",
-  "directional_prediction": "<1-2 sentences: predicted direction for Irvine/OC market over next 5-7 days with specific reasoning>",
+  "market_summary": "<3-4 句中文,CPA 视角的市场综述,需包含具体数字与走势方向>",
+  "directional_prediction": "<1-2 句中文:对未来 5-7 天尔湾/橙县市场走向的预测及具体依据>",
   "key_metric_snapshot": {{
-    "mortgage_30yr_conforming": "<rate, e.g. 6.87%>",
-    "mortgage_30yr_jumbo": "<rate>",
-    "treasury_10yr": "<yield>",
-    "irvine_median_price": "<price>",
-    "oc_months_supply": "<months>",
-    "irvine_dom": "<days>"
+    "mortgage_30yr_conforming": "<利率,例如 6.87%>",
+    "mortgage_30yr_jumbo": "<利率>",
+    "treasury_10yr": "<收益率>",
+    "irvine_median_price": "<价格>",
+    "oc_months_supply": "<月数>",
+    "irvine_dom": "<天数>"
   }}
 }}
 
 Sentiment scale:
-  1 = Strong Hold — materially suboptimal; significant headwinds; hold cash
-  2 = Hold — lean toward waiting; more risk than reward currently
-  3 = Neutral — balanced factors; timing depends on individual buyer circumstances
-  4 = Buy — favorable conditions; market dynamics support entry
-  5 = Strong Buy — aligned optimal conditions; clear entry opportunity
+  1 = 强烈持有 — 明显不利,逆风显著,建议持币观望
+  2 = 持有 — 倾向等待,当前风险高于回报
+  3 = 中性 — 因素均衡,时机取决于买家自身情况
+  4 = 买入 — 条件有利,市场动能支持入市
+  5 = 强烈买入 — 多项最优条件叠加,入市机会明确
 
-Provide 3–5 bullets each for bullish and bearish. Every bullet must cite a specific number.
+Provide 3–5 bullets each for bullish and bearish. Every bullet must cite a specific number. \
+Bullets are written in Chinese; numbers and proper nouns may remain in their original form.
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -119,20 +141,24 @@ Provide 3–5 bullets each for bullish and bearish. Every bullet must cite a spe
 # ─────────────────────────────────────────────────────────────────────────────
 
 WEEKLY_OUTCOME_RESEARCH_PROMPT = """\
-Today is Friday, {date}. Research what ACTUALLY happened in the Irvine, California \
+Today is {date}. Research what ACTUALLY happened in the Irvine, California \
 and Orange County real estate market this week ({week_start} to {week_end}).
 
-Answer specifically:
-1. Did home prices / list prices move up, down, or hold flat?
-2. Did mortgage rates rise, fall, or hold? By how many basis points?
-3. Was buyer/seller activity (pending sales, offers, open house traffic) higher or lower \
-than the prior week?
-4. Did any policy, economic, or local news materially affect the market?
-5. What did data services or market analysts say about this week's conditions?
-6. Net verdict: was this a bullish week (favorable to buyers or sellers entering now) \
-or bearish (rational to wait)?
+Answer specifically (output in Simplified Chinese):
+1. 房价 / 挂牌价是上涨、下跌还是持平?
+2. 房贷利率上升、下降还是持稳?变动多少基点?
+3. 买卖双方活跃度 (待过户、报价、开放日人流) 较上周更高还是更低?
+4. 是否有政策、经济或本地新闻对市场产生实质性影响?
+5. 数据机构或市场分析师本周对市场状况有何评价?
+6. 综合判断:本周整体偏多 (有利于买卖双方现在入市) 还是偏空 (理性应等待)?
 
 Be specific — use numbers. Cite sources where possible.
+
+PRIMARY DATA SOURCES — concentrate on these (not exclusive):
+- OC Realtors / Pacific West Association of Realtors
+- California Association of Realtors (CAR)
+- Redfin Data Center
+- Realtor.com market trends
 """
 
 WEEKLY_GRADING_PROMPT = """\
@@ -150,20 +176,22 @@ Grade on accuracy across three dimensions:
 - Metric accuracy: were key metrics (rates, inventory, prices) correctly anticipated?
 - Prediction quality: were the specific cited factors accurate and relevant?
 
-Return ONLY valid JSON:
+Return ONLY valid JSON. Letter grade stays as the English enum; all natural-language \
+string values (rationale, best_call, missed_call, trend_insight) MUST be in Simplified \
+Chinese (简体中文):
 {{
   "grade": "<A+|A|A-|B+|B|B-|C+|C|C-|D+|D|D-|F>",
   "score": <integer 0-100>,
-  "rationale": "<2-3 sentences explaining the grade objectively>",
-  "best_call": "<the single most accurate prediction or insight made this week>",
-  "missed_call": "<the biggest miss or blind spot>",
-  "trend_insight": "<what the cumulative week's data tells us about the market direction going into next week>"
+  "rationale": "<2-3 句中文,客观说明评分依据>",
+  "best_call": "<本周最准确的一次预测或洞察 (中文)>",
+  "missed_call": "<最大的失误或盲点 (中文)>",
+  "trend_insight": "<本周累积数据对下周市场走向的提示 (中文)>"
 }}
 """
 
 WEEKLY_NARRATIVE_PROMPT = """\
-Write a professional weekly market report for a CPA-licensed BHHS real estate agent \
-in Irvine, CA covering {week_start} to {week_end}.
+Write a professional weekly market report in Simplified Chinese (简体中文) for a \
+CPA-licensed BHHS real estate agent in Irvine, CA covering {week_start} to {week_end}.
 
 Context:
 - Daily predictions: {predictions}
@@ -174,12 +202,13 @@ Context:
 - Missed call: {missed_call}
 - Forward trend: {trend_insight}
 
-Write 3–4 focused paragraphs:
-  1. What happened in the Irvine/OC market this week (specific data)
-  2. Honest review of prediction accuracy
-  3. Key themes and developing trends
-  4. Forward-looking perspective for next week
+Write 3–4 focused paragraphs in Chinese:
+  1. 本周尔湾/橙县市场实际发生了什么 (具体数据)
+  2. 对预测准确性的诚实复盘
+  3. 关键主题与正在形成的趋势
+  4. 对下周的前瞻判断
 
 Tone: professional, direct, data-driven. Audience is a CPA — no hand-holding. \
-This message is sent via Telegram so avoid markdown headers; use plain paragraph breaks.
+This message is sent via Telegram so avoid markdown headers; use plain paragraph breaks. \
+Numbers, percentages, and proper nouns may remain in their original form.
 """

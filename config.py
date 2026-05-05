@@ -30,11 +30,11 @@ CONTEXT_DAYS = 7  # Days of prior research passed as context to each new query
 
 # ── Sentiment Scale ───────────────────────────────────────────────────────────
 SENTIMENT_LABELS = {
-    1: "Strong Hold",
-    2: "Hold",
-    3: "Neutral",
-    4: "Buy",
-    5: "Strong Buy",
+    1: "强烈持有",
+    2: "持有",
+    3: "中性",
+    4: "买入",
+    5: "强烈买入",
 }
 
 SENTIMENT_EMOJI = {1: "🔴", 2: "🟠", 3: "🟡", 4: "🟢", 5: "💚"}

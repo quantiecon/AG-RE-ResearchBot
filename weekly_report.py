@@ -49,22 +49,20 @@ def run_weekly_report() -> tuple:
         grading = {
             "grade": "N/A",
             "score": 0,
-            "rationale": "No daily predictions were recorded this week, so accuracy cannot be graded.",
+            "rationale": "本周未记录任何每日预测,因此无法对预测准确性进行评分。",
             "best_call": "—",
             "missed_call": "—",
             "trend_insight": (
-                "Daily research will begin populating the prediction record. "
-                "Next Sunday's report will include accuracy grading."
+                "每日研究将开始累积预测记录,下周日的报告将包含预测准确性评分。"
             ),
         }
         report_text = (
-            f"This is the first weekly report for the BHHS Irvine bot covering "
-            f"{week_start_readable} through {week_end_readable}. No daily sentiment "
-            f"predictions were on record this week, so prediction-accuracy grading is "
-            f"skipped this cycle.\n\n"
-            f"Market summary for the week:\n{actual_outcome}\n\n"
-            f"Starting next week, daily research at 07:30 PT will accumulate sentiment "
-            f"calls and the Sunday report will grade them against actual market movement."
+            f"这是 BHHS 尔湾房市机器人的首份每周报告,覆盖 "
+            f"{week_start_readable} 至 {week_end_readable}。本周未记录任何每日情绪预测,"
+            f"因此本期跳过预测准确性评分。\n\n"
+            f"本周市场综述:\n{actual_outcome}\n\n"
+            f"自下周起,每日上午 07:30 (太平洋时间) 的研究将累积情绪判断,"
+            f"周日的报告会依据实际市场走势对其进行评分。"
         )
     else:
         predictions_text = _predictions_text(predictions)

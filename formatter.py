@@ -22,38 +22,38 @@ def format_daily_message(
     bear_text = "\n".join(f"  • {f}" for f in bearish_factors)
 
     metric_labels = {
-        "mortgage_30yr_conforming": "30yr Conforming",
-        "mortgage_30yr_jumbo":      "30yr Jumbo",
-        "treasury_10yr":            "10yr Treasury",
-        "irvine_median_price":      "Irvine Median",
-        "oc_months_supply":         "OC Supply",
-        "irvine_dom":               "Irvine DOM",
+        "mortgage_30yr_conforming": "30年合规房贷",
+        "mortgage_30yr_jumbo":      "30年大额房贷",
+        "treasury_10yr":            "10年期国债",
+        "irvine_median_price":      "尔湾房价中位数",
+        "oc_months_supply":         "橙县供应月数",
+        "irvine_dom":               "尔湾在售天数",
     }
     metrics_lines = [
         f"  {label}: {key_metrics[key]}"
         for key, label in metric_labels.items()
         if key_metrics.get(key)
     ]
-    metrics_text = "\n".join(metrics_lines) if metrics_lines else "  (metrics unavailable)"
+    metrics_text = "\n".join(metrics_lines) if metrics_lines else "  （指标暂无）"
 
     return (
-        f"📊 BHHS IRVINE MARKET BRIEF — {date_str}\n"
+        f"📊 BHHS 尔湾房市简报 — {date_str}\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-        f"🏠 MARKET OVERVIEW\n"
+        f"🏠 市场概览\n"
         f"{market_summary}\n\n"
-        f"📉 KEY METRICS\n"
+        f"📉 关键指标\n"
         f"{metrics_text}\n\n"
-        f"📈 REASONS TO ENTER THE MARKET\n"
+        f"📈 入市理由\n"
         f"{bull_text}\n\n"
-        f"⚠️ REASONS FOR CAUTION\n"
+        f"⚠️ 谨慎原因\n"
         f"{bear_text}\n\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"{emoji} SENTIMENT: {sentiment_label.upper()}\n"
+        f"{emoji} 综合判断:{sentiment_label}\n"
         f"[{bar}] {sentiment_score}/5\n\n"
         f"{directional_prediction}\n\n"
         f"—\n"
-        f"Berkshire Hathaway HomeServices | Irvine, CA\n"
-        f"Orange County Real Estate Intelligence"
+        f"Berkshire Hathaway HomeServices | 加州尔湾\n"
+        f"橙县房产市场情报"
     )
 
 
@@ -69,29 +69,29 @@ def format_weekly_message(
     missed_call: str,
     trend_insight: str,
 ) -> str:
-    day_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    day_labels = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
     pred_lines = []
     for i, pred in enumerate(predictions[:7]):
-        label = day_labels[i] if i < len(day_labels) else f"Day {i + 1}"
+        label = day_labels[i] if i < len(day_labels) else f"第{i + 1}天"
         e = SENTIMENT_EMOJI.get(pred.get("sentiment_score", 3), "🟡")
         pred_lines.append(f"  {label}: {e} {pred.get('sentiment_label', 'N/A')}")
-    prediction_summary = "\n".join(pred_lines) if pred_lines else "  No predictions recorded — first week of operation."
+    prediction_summary = "\n".join(pred_lines) if pred_lines else "  暂无预测记录 — 首周运行。"
 
     return (
-        f"📋 WEEKLY MARKET REPORT\n"
-        f"Week of {week_start} → {week_end}\n"
+        f"📋 每周市场报告\n"
+        f"覆盖周期 {week_start} → {week_end}\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"
-        f"📆 DAILY PREDICTIONS\n"
+        f"📆 每日预测\n"
         f"{prediction_summary}\n\n"
-        f"📝 WEEKLY ANALYSIS\n"
+        f"📝 本周分析\n"
         f"{report_text}\n\n"
         f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🏆 PREDICTION GRADE: {grade} ({score}/100)\n\n"
-        f"✅ Best Call: {best_call}\n"
-        f"❌ Missed:    {missed_call}\n\n"
-        f"🔭 OUTLOOK\n"
+        f"🏆 预测评分:{grade} ({score}/100)\n\n"
+        f"✅ 最佳判断:{best_call}\n"
+        f"❌ 遗漏:    {missed_call}\n\n"
+        f"🔭 后市展望\n"
         f"{trend_insight}\n\n"
         f"—\n"
-        f"Berkshire Hathaway HomeServices | Irvine, CA\n"
-        f"Orange County Real Estate Intelligence"
+        f"Berkshire Hathaway HomeServices | 加州尔湾\n"
+        f"橙县房产市场情报"
     )
