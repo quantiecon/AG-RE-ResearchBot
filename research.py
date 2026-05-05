@@ -59,7 +59,10 @@ def _parse_json(text: str) -> dict:
 
 
 def run_daily_research(date_str: str, context_text: str) -> dict:
-    """Full daily pipeline: raw research → structured sentiment. Returns merged dict."""
+    """Full daily pipeline: raw research → structured sentiment. Returns merged dict.
+    Falls back to a neutral payload (with the raw research as market_summary) if
+    the sentiment model returns unparseable JSON, so Telegram always gets *something*.
+    """
     logger.info("Fetching raw market research from Perplexity")
     raw = _ask(
         SYSTEM_RESEARCHER,
@@ -72,7 +75,22 @@ def run_daily_research(date_str: str, context_text: str) -> dict:
         SENTIMENT_ANALYSIS_PROMPT.format(research=raw, date=date_str),
         PERPLEXITY_MAX_TOKENS_SENTIMENT,
     )
-    result = _parse_json(sentiment_raw)
+    try:
+        result = _parse_json(sentiment_raw)
+    except (ValueError, json.JSONDecodeError) as e:
+        logger.warning(f"Sentiment JSON parse failed: {e}. Falling back to raw research payload.")
+        result = {
+            "sentiment_score": 3,
+            "sentiment_label": "中性",
+            "bullish_factors": [],
+            "bearish_factors": [],
+            "market_summary": (
+                "(结构化情绪解析失败,以下为原始研究摘要)\n\n" + raw[:1500]
+            ),
+            "directional_prediction": "",
+            "key_metric_snapshot": {},
+            "most_significant_change": "",
+        }
     result["raw_research"] = raw
     return result
 
