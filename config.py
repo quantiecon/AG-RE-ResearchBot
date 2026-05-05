@@ -20,7 +20,7 @@ AGENT_PROFILE = {
 
 # ── Perplexity Model ──────────────────────────────────────────────────────────
 # Options: "sonar" (faster/cheaper), "sonar-pro" (deeper web search), "sonar-reasoning"
-PERPLEXITY_MODEL = "sonar-pro"
+PERPLEXITY_MODEL = "sonar"
 PERPLEXITY_MAX_TOKENS_RESEARCH = 2500
 PERPLEXITY_MAX_TOKENS_SENTIMENT = 1200
 PERPLEXITY_MAX_TOKENS_WEEKLY = 2000
