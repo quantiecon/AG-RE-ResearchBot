@@ -48,6 +48,12 @@ only natural-language string values are translated to Chinese."""
 # ─────────────────────────────────────────────────────────────────────────────
 
 DAILY_RESEARCH_PROMPT = """\
+⚠️ OUTPUT LANGUAGE — STRICT REQUIREMENT
+The entire response MUST be written in Simplified Chinese (简体中文). Every sentence, \
+heading, and bullet must be in Chinese. Numbers, percentages, currency symbols, dates, \
+and proper nouns (Irvine, FOMC, Redfin, Mortgage News Daily, Freddie Mac PMMS, etc.) may \
+remain in their original form. Do NOT respond in English. 请用简体中文回答以下全部内容。
+
 Today is {date}. Conduct a thorough real estate market research brief for a \
 CPA-licensed BHHS agent operating in Irvine, California and Orange County.
 
@@ -110,10 +116,14 @@ PRIOR WEEK CONTEXT — use to identify trends and directional changes:
 """
 
 SENTIMENT_ANALYSIS_PROMPT = """\
+⚠️ OUTPUT LANGUAGE — STRICT REQUIREMENT
+All natural-language string values in the JSON below MUST be written in Simplified Chinese \
+(简体中文). JSON keys, the sentiment_label enum (强烈持有/持有/中性/买入/强烈买入), and \
+numeric values stay as specified. Numbers, percentages, currency symbols, and proper nouns \
+may remain in original form. Do NOT use English in any string value.
+
 Based on the following Irvine/Orange County real estate market research for {date}, \
-produce a structured sentiment analysis. Return ONLY valid JSON — no text before or after. \
-All natural-language string values MUST be in Simplified Chinese (简体中文); JSON keys \
-and the sentiment_label enum stay as specified.
+produce a structured sentiment analysis. Return ONLY valid JSON — no text before or after.
 
 Research:
 {research}
@@ -161,6 +171,10 @@ Bullets are written in Chinese; numbers and proper nouns may remain in their ori
 # ─────────────────────────────────────────────────────────────────────────────
 
 WEEKLY_OUTCOME_RESEARCH_PROMPT = """\
+⚠️ OUTPUT LANGUAGE — STRICT REQUIREMENT
+Respond entirely in Simplified Chinese (简体中文). Numbers, percentages, and proper nouns \
+may remain in original form. Do NOT respond in English. 请用简体中文回答。
+
 Today is {date}. Research what ACTUALLY happened in the Irvine, California \
 and Orange County real estate market this week ({week_start} to {week_end}).
 
@@ -186,6 +200,11 @@ You may supplement with or substitute a better source where warranted; note the 
 """
 
 WEEKLY_GRADING_PROMPT = """\
+⚠️ OUTPUT LANGUAGE — STRICT REQUIREMENT
+All natural-language string values in the JSON below MUST be in Simplified Chinese \
+(简体中文). The letter grade enum stays as English letters (A+, A, ..., F). Do NOT \
+use English in rationale, best_call, missed_call, or trend_insight.
+
 Grade the accuracy of a real estate market prediction bot for the week of \
 {week_start} to {week_end} in Irvine, California / Orange County.
 
@@ -214,7 +233,11 @@ Chinese (简体中文):
 """
 
 WEEKLY_NARRATIVE_PROMPT = """\
-Write a professional weekly market report in Simplified Chinese (简体中文) for a \
+⚠️ OUTPUT LANGUAGE — STRICT REQUIREMENT
+Write the ENTIRE narrative in Simplified Chinese (简体中文). Do NOT respond in English. \
+Numbers, percentages, and proper nouns may remain in original form. 请用简体中文撰写。
+
+Write a professional weekly market report for a \
 CPA-licensed BHHS real estate agent in Irvine, CA covering {week_start} to {week_end}.
 
 Context:
