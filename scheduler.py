@@ -1,6 +1,6 @@
 """
 APScheduler setup.
-Daily job at 07:00 PT; weekly report Friday at 16:00 PT.
+Daily job at 07:30 PT; weekly report Sunday at 16:00 PT.
 """
 import logging
 from datetime import date, timedelta
@@ -72,11 +72,13 @@ async def daily_job() -> None:
         await send_message(message)
         logger.info("Daily job complete")
 
-    except Exception:
+    except Exception as e:
         logger.exception("Daily job failed")
         try:
             from telegram_client import send_message
-            await send_message("⚠️ BHHS Bot: Daily research job encountered an error. Check logs.")
+            await send_message(
+                f"⚠️ BHHS Bot: Daily research failed.\n{type(e).__name__}: {str(e)[:300]}"
+            )
         except Exception:
             pass
 
@@ -91,7 +93,7 @@ async def weekly_job() -> None:
         report_text, grading, predictions, actual_outcome = run_weekly_report()
 
         today = date.today()
-        week_start = (today - timedelta(days=4)).strftime("%B %d, %Y")
+        week_start = (today - timedelta(days=6)).strftime("%B %d, %Y")
         week_end = today.strftime("%B %d, %Y")
 
         message = format_weekly_message(
@@ -110,11 +112,13 @@ async def weekly_job() -> None:
         await send_message(message)
         logger.info("Weekly report job complete")
 
-    except Exception:
+    except Exception as e:
         logger.exception("Weekly report job failed")
         try:
             from telegram_client import send_message
-            await send_message("⚠️ BHHS Bot: Weekly report job encountered an error. Check logs.")
+            await send_message(
+                f"⚠️ BHHS Bot: Weekly report failed.\n{type(e).__name__}: {str(e)[:300]}"
+            )
         except Exception:
             pass
 

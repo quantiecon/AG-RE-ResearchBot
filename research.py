@@ -100,4 +100,15 @@ def grade_predictions(predictions_text: str, actual_outcome: str, week_start: st
         ),
         800,
     )
-    return _parse_json(raw)
+    try:
+        return _parse_json(raw)
+    except (ValueError, json.JSONDecodeError) as e:
+        logger.warning(f"Grading JSON parse failed: {e}. Returning fallback dict.")
+        return {
+            "grade": "N/A",
+            "score": 0,
+            "rationale": "Grading model did not return valid JSON; raw output preserved in trend_insight.",
+            "best_call": "—",
+            "missed_call": "—",
+            "trend_insight": raw[:600],
+        }

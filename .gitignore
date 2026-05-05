@@ -1,5 +1,4 @@
 .env
-data/research.db
 data/*.log
 __pycache__/
 *.pyc

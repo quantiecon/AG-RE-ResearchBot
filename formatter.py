@@ -69,13 +69,13 @@ def format_weekly_message(
     missed_call: str,
     trend_insight: str,
 ) -> str:
-    day_labels = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+    day_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     pred_lines = []
-    for i, pred in enumerate(predictions[:5]):
+    for i, pred in enumerate(predictions[:7]):
         label = day_labels[i] if i < len(day_labels) else f"Day {i + 1}"
         e = SENTIMENT_EMOJI.get(pred.get("sentiment_score", 3), "🟡")
         pred_lines.append(f"  {label}: {e} {pred.get('sentiment_label', 'N/A')}")
-    prediction_summary = "\n".join(pred_lines) if pred_lines else "  No predictions recorded."
+    prediction_summary = "\n".join(pred_lines) if pred_lines else "  No predictions recorded — first week of operation."
 
     return (
         f"📋 WEEKLY MARKET REPORT\n"

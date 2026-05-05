@@ -6,8 +6,8 @@ Modify this file to adjust schedule, metrics tracked, sentiment thresholds, etc.
 # ── Scheduling ────────────────────────────────────────────────────────────────
 TIMEZONE = "America/Los_Angeles"
 DAILY_HOUR = 7
-DAILY_MINUTE = 0
-WEEKLY_REPORT_DAY = "fri"
+DAILY_MINUTE = 30
+WEEKLY_REPORT_DAY = "sun"
 WEEKLY_REPORT_HOUR = 16
 WEEKLY_REPORT_MINUTE = 0
 

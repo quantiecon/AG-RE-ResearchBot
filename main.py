@@ -52,7 +52,7 @@ async def main() -> None:
     scheduler = create_scheduler()
     scheduler.start()
     logger.info(
-        "Scheduler running — daily 07:00 PT | weekly Friday 16:00 PT. "
+        "Scheduler running — daily 07:30 PT | weekly Sunday 16:00 PT. "
         "Ctrl-C to stop."
     )
     try:
