@@ -77,3 +77,10 @@ GRADE_THRESHOLDS = [
     (50, "D+"), (45, "D"), (40, "D-"),
     (0,  "F"),
 ]
+
+# ── Claude (Anthropic) ────────────────────────────────────────────────────────
+# Model used for all reasoning calls (sentiment, grading, narrative).
+CLAUDE_MODEL = "claude-opus-4-7"
+CLAUDE_MAX_TOKENS_SENTIMENT = 1500
+CLAUDE_MAX_TOKENS_GRADING = 1000
+CLAUDE_MAX_TOKENS_NARRATIVE = 2500

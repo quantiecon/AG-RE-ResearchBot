@@ -8,7 +8,10 @@ import os
 
 from openai import OpenAI
 
+import claude_client
 from config import (
+    CLAUDE_MAX_TOKENS_GRADING,
+    CLAUDE_MAX_TOKENS_SENTIMENT,
     PERPLEXITY_MAX_TOKENS_RESEARCH,
     PERPLEXITY_MAX_TOKENS_SENTIMENT,
     PERPLEXITY_MODEL,
@@ -67,12 +70,11 @@ def run_daily_research(date_str: str, context_text: str) -> dict:
         PERPLEXITY_MAX_TOKENS_RESEARCH,
     )
     logger.info("Generating structured sentiment analysis")
-    sentiment_raw = _ask(
+    result = claude_client.reason_json(
         SYSTEM_ANALYST,
         SENTIMENT_ANALYSIS_PROMPT.format(research=raw, date=date_str),
-        PERPLEXITY_MAX_TOKENS_SENTIMENT,
+        CLAUDE_MAX_TOKENS_SENTIMENT,
     )
-    result = _parse_json(sentiment_raw)
     result["raw_research"] = raw
     return result
 
@@ -90,7 +92,7 @@ def research_weekly_outcome(date_str: str, week_start: str, week_end: str) -> st
 
 def grade_predictions(predictions_text: str, actual_outcome: str, week_start: str, week_end: str) -> dict:
     logger.info("Grading weekly predictions")
-    raw = _ask(
+    return claude_client.reason_json(
         SYSTEM_ANALYST,
         WEEKLY_GRADING_PROMPT.format(
             week_start=week_start,
@@ -98,6 +100,5 @@ def grade_predictions(predictions_text: str, actual_outcome: str, week_start: st
             predictions=predictions_text,
             actual_outcome=actual_outcome,
         ),
-        800,
+        CLAUDE_MAX_TOKENS_GRADING,
     )
-    return _parse_json(raw)

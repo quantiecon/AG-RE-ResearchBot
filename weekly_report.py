@@ -4,9 +4,10 @@ Friday weekly report: research actual outcome, grade predictions, generate narra
 import logging
 from datetime import date, timedelta
 
+import claude_client
 import memory
 import research
-from config import PERPLEXITY_MAX_TOKENS_WEEKLY
+from config import CLAUDE_MAX_TOKENS_NARRATIVE, PERPLEXITY_MAX_TOKENS_WEEKLY
 from prompts import SYSTEM_ANALYST, WEEKLY_NARRATIVE_PROMPT
 
 logger = logging.getLogger(__name__)
@@ -49,7 +50,7 @@ def run_weekly_report() -> tuple:
         predictions_text, actual_outcome, week_start_readable, week_end_readable
     )
 
-    report_text = research._ask(
+    report_text = claude_client.reason(
         SYSTEM_ANALYST,
         WEEKLY_NARRATIVE_PROMPT.format(
             week_start=week_start_readable,
@@ -63,7 +64,7 @@ def run_weekly_report() -> tuple:
             missed_call=grading.get("missed_call", ""),
             trend_insight=grading.get("trend_insight", ""),
         ),
-        PERPLEXITY_MAX_TOKENS_WEEKLY,
+        CLAUDE_MAX_TOKENS_NARRATIVE,
     )
 
     memory.save_weekly_report(
