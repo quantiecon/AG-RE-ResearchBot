@@ -79,8 +79,12 @@ GRADE_THRESHOLDS = [
 ]
 
 # ── Claude (Anthropic) ────────────────────────────────────────────────────────
-# Model used for all reasoning calls (sentiment, grading, narrative).
+# Default model for reasoning calls (used by the weekly narrative).
 CLAUDE_MODEL = "claude-opus-4-7"
+# Per-task overrides — sentiment and grading are structured tasks where
+# Sonnet matches Opus quality at a fraction of the cost.
+CLAUDE_MODEL_SENTIMENT = "claude-sonnet-4-6"
+CLAUDE_MODEL_GRADING = "claude-sonnet-4-6"
 CLAUDE_MAX_TOKENS_SENTIMENT = 1500
 CLAUDE_MAX_TOKENS_GRADING = 1000
 CLAUDE_MAX_TOKENS_NARRATIVE = 2500

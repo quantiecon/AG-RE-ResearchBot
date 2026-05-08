@@ -7,7 +7,7 @@ from datetime import date, timedelta
 import claude_client
 import memory
 import research
-from config import CLAUDE_MAX_TOKENS_NARRATIVE, PERPLEXITY_MAX_TOKENS_WEEKLY
+from config import CLAUDE_MAX_TOKENS_NARRATIVE
 from prompts import SYSTEM_ANALYST, WEEKLY_NARRATIVE_PROMPT
 
 logger = logging.getLogger(__name__)
