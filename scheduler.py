@@ -9,6 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from config import (
+    CLAUDE_MAX_TOKENS_TRANSLATION,
     CONTEXT_DAYS,
     DAILY_HOUR,
     DAILY_MINUTE,
@@ -19,6 +20,21 @@ from config import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+async def _send_chinese_followup(message: str) -> None:
+    """Translate `message` to Simplified Chinese and send as a follow-up.
+    Failures here are logged but do not affect the primary English send."""
+    try:
+        import claude_client
+        from telegram_client import send_message
+
+        cn = claude_client.translate_to_simplified_chinese(
+            message, CLAUDE_MAX_TOKENS_TRANSLATION
+        )
+        await send_message(cn)
+    except Exception:
+        logger.exception("Chinese follow-up translation failed")
 
 
 async def daily_job() -> None:
@@ -70,6 +86,7 @@ async def daily_job() -> None:
         )
 
         await send_message(message)
+        await _send_chinese_followup(message)
         logger.info("Daily job complete")
 
     except Exception:
@@ -108,6 +125,7 @@ async def weekly_job() -> None:
         )
 
         await send_message(message)
+        await _send_chinese_followup(message)
         logger.info("Weekly report job complete")
 
     except Exception:

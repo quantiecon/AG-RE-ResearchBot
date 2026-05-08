@@ -40,3 +40,19 @@ def reason(system: str, user: str, max_tokens: int, model: str | None = None) ->
 def reason_json(system: str, user: str, max_tokens: int, model: str | None = None) -> dict:
     """Calls Claude, parses JSON from response, returns dict."""
     return parse_json(reason(system, user, max_tokens, model=model))
+
+
+_TRANSLATE_SYSTEM = (
+    "You are a professional translator specializing in real estate and finance. "
+    "Translate the user's message into Simplified Chinese (简体中文). "
+    "Preserve all formatting exactly: line breaks, separator lines (━━━), "
+    "bullet markers (•), emoji, and the overall structure. Translate the "
+    "section headers and labels (e.g. \"MARKET OVERVIEW\", \"SENTIMENT\") into "
+    "natural Chinese. Keep numerical values, percentages, and tickers as-is. "
+    "Return only the translation — no preamble, no explanation."
+)
+
+
+def translate_to_simplified_chinese(text: str, max_tokens: int) -> str:
+    """Translate a Telegram message into Simplified Chinese, preserving layout."""
+    return reason(_TRANSLATE_SYSTEM, text, max_tokens)
